@@ -1,17 +1,16 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+@extends('layouts.admin')
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+@section('content')
 
-    <title>Cadastro de Usuários - Laravel 12</title>
+<div class="content">
+    <div class="content-title">
+        <h1 class="page-title">Bem-vindo!</h1>
+        <a href="#" class="btn-primary">Listar</a>
+    </div>
 
-</head>
+    <a href="{{ route('user.create') }}" class="btn-success">Cadastrar</a>
+</div>
 
-<body>
-    <h1>Cadastro de Usuários</h1>
-    <a href="{{ route('user.create') }}">Cadastrar</a>
-</body>
 
-</html>
+
+@endsection

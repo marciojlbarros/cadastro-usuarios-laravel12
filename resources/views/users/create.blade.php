@@ -1,27 +1,42 @@
-<div>
-    <h2>Cadastrar Usuários</h2>
+@extends('layouts.admin')
+
+@section('content')
+
+<div class="content">
+    <div class="content-title">
+        <h1 class="page-title">Cadastrar Usuários</h1>
+        <a href="#" class="btn-primary">Listar</a>
+    </div>
 
     @if(@session('success'))
-    <p style="color: green">{{ session('success') }}</p>
+    <div class="alert-success">{{ session('success') }}</div>
     @endif
 
     @if(@session('error'))
-    <p style="color: red">{{ session('error') }}</p>
+    <div class="alert-error">{{ session('error') }}</div>
     @endif
 
-    <form action="{{ route('user.store')}}" method="POST">
+    <form action="{{ route('user.store')}}" method="POST" class="form-container">
         @csrf
-        <label for="name">Nome:</label>
-        <input type="text" name="name" placeholder="Nome" value="{{ old('name')}}" required><br><br>
+        <div class="mb-1">
+            <label for="name" class="form-label">Nome:</label>
+            <input type="text" name="name" placeholder="Nome" class="form-input" value="{{ old('name')}}"
+                required><br><br>
+        </div>
 
-        <label for="email">Email:</label>
-        <input type="email" name="email" placeholder="Email" value="{{ old('email')}}" required><br><br>
+        <div class="mb-1">
+            <label for="email" class="form-label">Email:</label>
+            <input type="email" name="email" placeholder="Email" class="form-input" value="{{ old('email')}}"
+                required><br><br>
+        </div>
 
-        <label for="password">Senha:</label>
-        <input type="password" name="password" placeholder="Senha com no mínimo 6 caracteres" value="{{ old('senha')}}"
-            required><br><br>
+        <div class="mb-1">
+            <label for="password" class="form-label">Senha:</label>
+            <input type="password" name="password" class="form-input" placeholder="Senha com no mínimo 6 caracteres"
+                value="{{ old('senha')}}" required><br><br>
+        </div>
 
-        <button type="submit">Cadastrar</button>
+        <button type="submit" class="btn-success">Cadastrar</button>
     </form>
-
 </div>
+@endsection
