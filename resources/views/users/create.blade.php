@@ -8,13 +8,7 @@
         <a href="#" class="btn-primary">Listar</a>
     </div>
 
-    @if(@session('success'))
-    <div class="alert-success">{{ session('success') }}</div>
-    @endif
-
-    @if(@session('error'))
-    <div class="alert-error">{{ session('error') }}</div>
-    @endif
+    <x-alert />
 
     <form action="{{ route('user.store')}}" method="POST" class="form-container">
         @csrf
