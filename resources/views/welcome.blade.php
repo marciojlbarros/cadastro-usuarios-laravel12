@@ -11,6 +11,7 @@
 
 <body>
     <h1>Cadastro de Usuários</h1>
+    <a href="{{ route('user.create') }}">Cadastrar</a>
 </body>
 
 </html>
