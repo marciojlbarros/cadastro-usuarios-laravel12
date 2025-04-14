@@ -31,4 +31,21 @@ class UserController extends Controller
         return back()->withInput()->with('error', 'Usuário não cadastrado!');
     }
 }
+
+    public function edit(User $user){
+        return view('users.edit', ['user' => $user]);
+    }
+
+    public function update(UserRequest $request, User $user){
+        try{
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email
+        ]); 
+        return redirect()->route('user.edit', ['user' => $user->id])->with('success', 'Usuário atualizado com sucesso!');
+    } catch (Exception $e) {
+        return back()->withInput()->with('error', 'Usuário não atualizado!');
+    }
 }
+}
+
