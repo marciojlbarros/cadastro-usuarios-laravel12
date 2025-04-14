@@ -25,7 +25,7 @@
                     <td class="table-cel">{{ $user->name }}</td>
                     <td class="table-cel">{{ $user->email }}</td>
                     <td class="table-actions">
-                        <a href="#" class="btn-primary">Visualizar</a>
+                        <a href="{{ route('user.show', ['user' => $user->id]) }}" class="btn-primary">Visualizar</a>
                         <a href="{{ route('user.edit', ['user' => $user->id]) }}" class="btn-warning">Editar</a>
                         <a href="#" class="btn-danger">Apagar</a>
                     </td>
