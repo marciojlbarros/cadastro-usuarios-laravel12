@@ -8,6 +8,11 @@ use Exception;
 
 class UserController extends Controller
 {
+    public function index(){
+        $users = User::orderByDesc('id')->paginate(3);
+        return view('users.index', ['users' => $users]);
+    }
+
     public function create(){
         return view('users.create');        
     }

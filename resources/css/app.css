@@ -55,6 +55,14 @@
         @apply bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 cursor-pointer transition-colors;
     }
 
+    .btn-warning {
+        @apply bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 cursor-pointer transition-colors;
+    }
+
+    .btn-danger {
+        @apply bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 cursor-pointer transition-colors;
+    }
+
     .form-container {
         @apply mt-6 bg-white shadow-md rounded-lg p-6;
     }
@@ -65,6 +73,46 @@
 
     .form-input {
         @apply border p-2 w-full mt-1 rounded-md border-blue-100 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:outline-none;
+    }
+
+    .table-container {
+        @apply overflow-x-auto bg-white shadow-md rounded-lg;
+    }
+
+    .table {
+        @apply min-w-full border-collapse w-full;
+    }
+
+    .table-header {
+        @apply bg-blue-400 text-white uppercase text-sm leading-normal;
+    }
+
+    .table-header th {
+        @apply py-3 px-6 text-left;
+    }
+
+    .table-header .center {
+        @apply text-center;
+    }
+
+    .table-body {
+        @apply text-gray-700 text-sm font-light;
+    }
+
+    .table-row {
+        @apply border-b border-gray-200 hover:bg-blue-50 transition;
+    }
+
+    .table-cel {
+        @apply py-3 px-6;
+    }
+
+    .table-actions {
+        @apply py-3 px-6 text-center;
+    }
+
+    .pagination {
+        @apply mt-2 p-3;
     }
 
     .alert-success {
