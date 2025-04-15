@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Exception;
 use App\Models\User;
+use App\Mail\UserPdfMail;
 use Illuminate\Http\Request;
-use App\Http\Requests\UserRequest;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Http\Requests\UserRequest;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -88,11 +90,32 @@ class UserController extends Controller
     }
 
     public function generatePdf(User $user){
+        try {
+            
+            $pdf = Pdf::loadView('users.generate-pdf', ['user' => $user])
+            ->setPaper('a4', 'portrait');
 
-        $pdf = Pdf::loadView('users.generate-pdf', ['user' => $user])
-        ->setPaper('a4', 'portrait');
+            //Definir o caminho temporário para salvar o PDF
+            $pdfPath = storage_path("app/public/$user->name.pdf");
 
-        return $pdf->download('user.pdf');
+            //Salvar o PDF localmente
+            $pdf->save($pdfPath);
+
+            //Enviar e-mail com o PDF anexado        
+            Mail::to($user->email)->send(new UserPdfMail($pdfPath, $user));
+
+            //Remover o arquivo após o envio do e-mail
+            if(file_exists($pdfPath)){
+                unlink($pdfPath);
+            }
+
+            //Redirecionar o usuário, enviar a mensagem de sucesso
+            return redirect()->route('user.show', ['user' => $user->id])->with('success', 'E-mail enviado com sucesso!');
+
+        } catch (Exception $e) {
+            //Redirecionar o usuário, enviar a mensagem de erro
+            return redirect()->route('user.show', ['user' => $user->id])->with('error', 'E-mail não enviado!');
+        }
     }
 }
 
