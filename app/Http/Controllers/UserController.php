@@ -27,7 +27,7 @@ class UserController extends Controller
         try {
         $user = User::create([
             'name' => $request->name,
-            'email' => $request->email,
+        'email' => $request->email,
             'password' => $request->password
         ]); 
         
@@ -67,14 +67,23 @@ class UserController extends Controller
 
     public function update(UserRequest $request, User $user){
         try{
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email
-        ]); 
+            $user->update([
+                'name' => $request->name,
+                'email' => $request->email
+            ]); 
         return redirect()->route('user.show', ['user' => $user->id])->with('success', 'Usuário atualizado com sucesso!');
-    } catch (Exception $e) {
-        return back()->withInput()->with('error', 'Usuário não atualizado!');
+            } catch (Exception $e) {
+                return back()->withInput()->with('error', 'Usuário não atualizado!');
+            }
     }
-}
+
+    public function destroy(User $user){
+        try {
+            $user->delete();
+            return redirect()->route('user.index')->with('success', 'Usuário excluido com sucesso!');
+        } catch (Exception $e) {
+            return redirect()->route('user.index')->with('error', 'Usuário não excluido!');
+        }
+    }
 }
 

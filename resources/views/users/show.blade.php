@@ -5,10 +5,16 @@
 <div class="content">
     <div class="content-title">
         <h1 class="page-title">Detalhes do Usuários</h1>
-        <span>
+        <span class="flex space-x-1">
             <a href="{{ route('user.index') }}" class="btn-primary">Listar</a>
             <a href="{{ route('user.edit', ['user' => $user->id]) }}" class="btn-warning">Editar</a>
             <a href="{{ route('user.edit-password', ['user' => $user->id]) }}" class="btn-warning">Editar Senha</a>
+            <form action="{{ route('user.destroy', ['user' => $user->id]) }}" method="POST">
+                @csrf
+                @method('delete')
+                <button type="submit" class="btn-danger"
+                    onclick="return confirm('Tem certeza que deseja apagar?')">Apagar</button>
+            </form>
         </span>
     </div>
 
