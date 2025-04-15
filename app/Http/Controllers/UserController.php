@@ -6,6 +6,7 @@ use Exception;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class UserController extends Controller
 {
@@ -84,6 +85,14 @@ class UserController extends Controller
         } catch (Exception $e) {
             return redirect()->route('user.index')->with('error', 'Usuário não excluido!');
         }
+    }
+
+    public function generatePdf(User $user){
+
+        $pdf = Pdf::loadView('users.generate-pdf', ['user' => $user])
+        ->setPaper('a4', 'portrait');
+
+        return $pdf->download('user.pdf');
     }
 }
 
