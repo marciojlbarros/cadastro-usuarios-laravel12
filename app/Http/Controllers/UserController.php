@@ -12,9 +12,25 @@ use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
-    public function index(){
-        $users = User::orderByDesc('id')->paginate(3);
-        return view('users.index', ['users' => $users]);
+    public function index(Request $request){
+        // $users = User::orderByDesc('id')->paginate(3);
+        $users = User::when(
+            $request->filled('name'),
+            fn($query) => $query->whereLike('name', '%'. $request->name . '%')
+        )
+        ->when(
+            $request->filled('email'),
+            fn($query) => $query->whereLike('email', '%'. $request->email . '%')
+        )
+        ->orderByDesc('id')
+        ->paginate(10)
+        ->withQueryString();
+
+        return view('users.index', [
+            'users' => $users,
+            'name' => $request->name,
+            'email' => $request->email
+        ]);
     }
 
     public function show(User $user){
@@ -30,7 +46,7 @@ class UserController extends Controller
         try {
         $user = User::create([
             'name' => $request->name,
-        'email' => $request->email,
+            'email' => $request->email,
             'password' => $request->password
         ]); 
         
