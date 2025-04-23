@@ -15,6 +15,10 @@
 
         <input type="text" name="email" placeholder="Digite o E-mail" value="{{ $email }}" class="form-input">
 
+        <input type="datetime-local" name="start_date" value="{{ $start_date }}" class="form-input">
+
+        <input type="datetime-local" name="end_date" value="{{ $end_date }}" class="form-input">
+
         <div class="flex gap-1">
             <button type="submit" class="btn-primary">
                 <span>Pesquisar</span>
