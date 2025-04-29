@@ -10,6 +10,9 @@
             <a href="{{ url('generate-pdf-user') . (request()->getQueryString() ? '?' . request()->getQueryString() : '') }}"
                 class="btn-warning">Gerar
                 PDF</a>
+            <a href="{{ url('generate-csv-user') . (request()->getQueryString() ? '?' . request()->getQueryString() : '') }}"
+                class="btn-warning">Gerar
+                CSV</a>
         </span>
     </div>
 
