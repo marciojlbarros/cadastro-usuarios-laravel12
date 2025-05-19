@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ImportCsvUserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -24,3 +25,5 @@ Route::delete('/delete-user/{user}', [UserController::class, 'destroy'])->name('
 Route::get('/generate-pdf-user/{user}', [UserController::class, 'generatePdf'])->name('user.generate-pdf');
 Route::get('/generate-pdf-user', [UserController::class, 'generatePdfUsers'])->name('user.generate-pdf-users');
 Route::get('/generate-csv-user', [UserController::class, 'generateCsvUsers'])->name('user.generate-csv-users');
+
+Route::post('/import-csv-user', [ImportCsvUserController::class, 'importCsvUsers'])->name('user.import-csv-users');
