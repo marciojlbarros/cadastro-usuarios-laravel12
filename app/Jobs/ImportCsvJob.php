@@ -6,7 +6,9 @@ use App\Models\User;
 use League\Csv\Reader;
 use League\Csv\Statement;
 use Illuminate\Support\Str;
+use App\Mail\WelcomeUserMail;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use NunoMaduro\Collision\Adapters\Phpunit\State;
@@ -47,8 +49,8 @@ class ImportCsvJob implements ShouldQueue
         //Processa o arquivo CSV e retorna os registros como uma coleção
         $records = (new Statement())->process($csv);
 
-        //Inicializa um array para armazenar os dados que serão inseridos em lote
-        $batchInsert = [];
+        // Variavel para receber o tempo progressivo do envio do e-mail
+        $delaySeconds = 0;
 
         //Itera pelos registros e adiciona-os ao array de lote
         foreach ($records as $record) {
@@ -68,28 +70,30 @@ class ImportCsvJob implements ShouldQueue
                 continue;
             }
 
-            //Adiciona os dados do novo usuario no array de lote
-            $batchInsert[] = [
+            //Gerar senha temporária
+            $password = Str::random(7);
+
+            //Criar o usuário
+            $user = User::create([
                 'name' => $name,
                 'email' => $email,
-                'password' => Hash::make(Str::random(7), ['rounds' => 12]),
-            ];
+                'password' => $password,
+            ]);
 
-            //Se já existe 50 registros prontos, faz a inserção em lote no banco de dados
-            if (count($batchInsert) >= 50) {
-               //Insere os registros no banco de dados
-                User::insert($batchInsert);
-                //Limpa o array de lote
-                $batchInsert = [];
-            }
+            // Enviar o e-mail de boas-vindas
+            // Não usar o send para grande quantidade de usuários.
+            Mail::to($email)->send(new WelcomeUserMail($user, $password));
+
+            // Para grande quantidade de usuários, utilizar o queue.
+            //Mail::to($email)->queue(new WelcomeUserMail($user, $password));
+
+            // Para grande quantidade de usuários, usar o later para agendar o
+            // envio a cada 10 segundo, com o objetivo de distribuir a carga de envio de muitos e-mails.
+            //Mail::to($email)->later(now()->addSeconds($delaySeconds), new WelcomeUserMail($user, $password));
+
+            //Incrementa o tempo de envio do e-mail
+            //$delaySeconds += 10;
+
         }
-
-            //Apos o loop, insere os registos restantes que ficaram abaixo de 50
-            if (!empty($batchInsert)) {
-               //Insere os registros no banco de dados
-                User::insert($batchInsert);
-                //Limpa o array de lote
-                $batchInsert = [];
-            }
     }
 }
